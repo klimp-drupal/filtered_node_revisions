@@ -1,0 +1,48 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for filtered_node_revisions module.
+ */
+
+/**
+ * Implements hook_query_TAG_alter().
+ *
+ * The hook relies on the diff module #3484997 patch adding
+ * the 'revision_overview_form' query tag.
+ *
+ * @see \Drupal\Core\Entity\Query\Sql\Query::prepare()
+ *
+ * @link https://www.drupal.org/project/diff/issues/3484997
+ */
+function filtered_node_revisions_query_revision_overview_form_alter(Drupal\Core\Database\Query\AlterableInterface $query) {
+  // Apply only to the custom route.
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  if ($route_name != 'entity.node.filtered_node_revisions_filtered_version_history') {
+    return;
+  }
+
+  // 'base_table' is the node_revision table. We join it once again similarly to
+  // the entity query latestRevision() method.
+  $query->leftJoin(
+    'node_revision',
+    'filtered_node_revisions__node_revision',
+    'base_table.nid = filtered_node_revisions__node_revision.nid AND base_table.vid < filtered_node_revisions__node_revision.vid'
+  );
+
+  $query->innerJoin(
+    'node_field_revision',
+    'filtered_node_revisions__node_field_revision',
+    'filtered_node_revisions__node_field_revision.vid = base_table.vid'
+  );
+
+  // Show only Published revisions + the latest Draft.
+  // The conditions are taken from \Drupal\Core\Entity\Query\Sql\Query::prepare().
+  $orGroup = $query->orConditionGroup()
+    // Entity query condition('status', 1) results in condition('node_field_revision.status', 1).
+    ->condition('filtered_node_revisions__node_field_revision.status', 1)
+
+    // Entity query latestRevision() results in the isNull() condition.
+    ->isNull('filtered_node_revisions__node_revision.nid');
+  $query->condition($orGroup);
+}

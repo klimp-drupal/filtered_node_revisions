@@ -1,0 +1,5 @@
+entity.node.filtered_node_revisions_filtered_version_history:
+  route_name: entity.node.filtered_node_revisions_filtered_version_history
+  base_route: entity.node.canonical
+  title: 'Filtered Revisions'
+  weight: 20

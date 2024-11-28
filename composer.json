@@ -1,0 +1,15 @@
+{
+    "name": "klimp-drupal/filtered_node_revisions",
+    "description": "Filtered Node Revisions module.",
+    "type": "drupal-module",
+    "homepage": "https://github.com/klimp-drupal/filtered_node_revisions",
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Nikolay Volodin (klimp)",
+            "homepage": "https://www.drupal.org/u/klimp",
+            "role": "Maintainer"
+        }
+    ]
+}

@@ -1,0 +1,7 @@
+name: 'Filtered Node Revisions'
+type: module
+description: 'Adds a new "Filtered Revisions" tab.'
+package: Custom
+core_version_requirement: ^10 || ^11
+dependencies:
+  - diff:diff

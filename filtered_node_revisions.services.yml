@@ -1,0 +1,5 @@
+services:
+  filtered_node_revisions.route_subscriber:
+    class: Drupal\filtered_node_revisions\EventSubscriber\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
